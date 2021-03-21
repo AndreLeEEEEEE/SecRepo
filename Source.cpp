@@ -9,23 +9,23 @@
 #include <numeric>
 using namespace std;
 
+int strtoi(string str) {
+	stringstream scasti(str);
+	int temp;
+	scasti >> temp;
+	return temp;
+}
+
 vector<int> rdFile(string fileName) {
 	ifstream theFile(fileName);
-	vector<string> fileContent;
-	vector<int> mat;
+	vector<int> contents;
 	string word;
 	while (theFile >> word) {  // While there's something to be read
-		fileContent.push_back(word);
+		contents.push_back(strtoi(word));
 	}
 	theFile.close();
 
-	for (int i = 0; i < fileContent.size(); ++i) {
-		stringstream scasti(fileContent[i]);
-		int temp;
-		scasti >> temp;
-		mat.push_back(temp);
-	}
-	return mat;
+	return contents;
 }
 
 int turnAround(int finish, int arrival) {
