@@ -84,11 +84,11 @@ int main(int argc, char* argv[]) {
 		intContent.push_back(strtoi(fileContent[i]));
 	}
 
-	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
+	vector<int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
-	for (int i = 0; i < intContent.size(); i + 3) {
-		processes.insert(pair<int, int>(intContent[i], intContent[i + 1]));
-		CPUburst.push_back(intContent[i+2]);
+	for (int i = 1; i < intContent.size(); i + 3) {
+		processes.push_back(intContent[i]);
+		CPUburst.push_back(intContent[i + 1]);
 	}
 
 	// Due to being a command line variable, argv[3] is technically is string, but typeid says Pc
