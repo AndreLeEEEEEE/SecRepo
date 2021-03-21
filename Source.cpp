@@ -77,9 +77,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	vector<int> integerForm;
-	/*for (int i = 0; i < fileContent.size(); ++i) {
+	for (int i = 0; i < fileContent.size(); ++i) {
 		integerForm.push_back(strtoi(fileContent[i]));
-	}*/
+	}
 	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
 	/*for (int i = 0; i < fileContent.size(); i + 3) {
