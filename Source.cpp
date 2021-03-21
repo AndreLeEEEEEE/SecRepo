@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <map>
 #include <numeric>
+#include <typeinfo>
 using namespace std;
 
 int strtoi(string str) {
@@ -69,6 +70,7 @@ void FCFS(map<int, int> process, vector<int> burst) {
 int main(int argc, char* argv[]) {
 	for (int i = 0; i < argc; ++i) {
 		cout << argv[i] << endl;
+		cout << typeid(argv[i]).name() << endl;
 	}
 	vector<string> fileContent = rdFile(argv[2]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
