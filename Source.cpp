@@ -87,10 +87,10 @@ int main(int argc, char* argv[]) {
 
 	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
-	for (int i = 0; i < intContent.size(); i + 3) {
+	/*for (int i = 0; i < intContent.size(); i + 3) {
 		processes.insert(pair<int, int>(intContent[i], intContent[i + 1]));
 		CPUburst.push_back(intContent[i+2]);
-	}
+	}*/
 
 	// Due to being a command line variable, argv[3] is technically is string, but typeid says Pc
 	// To officially make it a string, I have to store it in string variable
