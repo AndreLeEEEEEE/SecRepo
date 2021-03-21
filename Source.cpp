@@ -16,12 +16,14 @@ int strtoi(string str) {
 	return temp;
 }
 
-vector<int> rdFile(string fileName) {
+vector<string> rdFile(string fileName) {
 	ifstream theFile(fileName);
-	vector<int> contents;
+	//vector<int> contents;
+	vector<string> contents;
 	string word;
 	while (theFile >> word) {  // While there's something to be read
-		contents.push_back(strtoi(word));
+		//contents.push_back(strtoi(word));
+		contents.push_back(word);
 	}
 	theFile.close();
 
@@ -65,7 +67,7 @@ void FCFS(map<int, int> process, vector<int> burst) {
 }
 
 int main(int argc, char* argv[]) {
-	vector<int> fileContent = rdFile(argv[2]);
+	vector<string> fileContent = rdFile(argv[2]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
 		return 1;
@@ -76,18 +78,10 @@ int main(int argc, char* argv[]) {
 	}
 	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
-	for (int i = 0; i < fileContent.size(); i + 3) {
+	/*for (int i = 0; i < fileContent.size(); i + 3) {
 		processes.insert(pair<int, int>(fileContent[i], fileContent[i + 1]));
 		CPUburst.push_back(fileContent[i+2]);
-	}
-
-	// Remove later
-	for (int i = 0; i < processes.size(); ++i) {
-		cout << processes[i + 1] << endl;
-	}
-	for (int i = 0; i < CPUburst.size(); ++i) {
-		cout << CPUburst[i] << endl;
-	}
+	}*/
 
 	if (argv[3] == "FCFS") {  // First come, first serve
 		//FCFS(processes, CPUburst);
