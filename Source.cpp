@@ -19,11 +19,9 @@ int strtoi(string str) {
 
 vector<string> rdFile(string fileName) {
 	ifstream theFile(fileName);
-	//vector<int> contents;
 	vector<string> contents;
 	string word;
 	while (theFile >> word) {  // While there's something to be read
-		//contents.push_back(strtoi(word));
 		contents.push_back(word);
 	}
 	theFile.close();
@@ -68,10 +66,6 @@ void FCFS(map<int, int> process, vector<int> burst) {
 }
 
 int main(int argc, char* argv[]) {
-	for (int i = 0; i < argc; ++i) {
-		cout << argv[i] << endl;
-		cout << typeid(argv[i]).name() << endl;
-	}
 	vector<string> fileContent = rdFile(argv[2]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
@@ -81,9 +75,11 @@ int main(int argc, char* argv[]) {
 		printf("The input file is incomplete\n");
 		return 1;
 	}
-	for (int i = 0; i < fileContent.size(); ++i) {
-		cout << fileContent[i] << endl;
-	}
+
+	vector<int> integerForm;
+	/*for (int i = 0; i < fileContent.size(); ++i) {
+		integerForm.push_back(strtoi(fileContent[i]));
+	}*/
 	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
 	/*for (int i = 0; i < fileContent.size(); i + 3) {
@@ -91,14 +87,15 @@ int main(int argc, char* argv[]) {
 		CPUburst.push_back(fileContent[i+2]);
 	}*/
 
-	if (argv[3] == "FCFS") {  // First come, first serve
+	string method = argv[3];
+	if (method == "FCFS") {  // First come, first serve
 		//FCFS(processes, CPUburst);
 		cout << "FCFS" << endl;
 	}
-	else if (argv[3] == "SRTF") {  // Shortest remaining task first - preemptive
+	else if (method == "SRTF") {  // Shortest remaining task first - preemptive
 		cout << "SRTF" << endl;
 	}
-	else if (argv[3] == "RR") {  // Round robin
+	else if (method == "RR") {  // Round robin
 		cout << "RR" << endl;
 	}
 	else {
