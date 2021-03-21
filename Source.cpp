@@ -67,6 +67,9 @@ void FCFS(map<int, int> process, vector<int> burst) {
 }
 
 int main(int argc, char* argv[]) {
+	for (int i = 0; i < argc; ++i) {
+		cout << argv[i] << endl;
+	}
 	vector<string> fileContent = rdFile(argv[2]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
