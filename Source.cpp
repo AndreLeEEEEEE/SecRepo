@@ -19,6 +19,7 @@ vector<int> rdFile(string fileName) {
 			int temp;
 			scasti >> temp;
 			contents.push_back(temp);
+			cout << temp << endl;
 		}
 		theFile.close();
 	}
