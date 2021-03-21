@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < argc; ++i) {
 		cout << argv[i] << endl;
 	}
-	vector<int> fileContent = rdFile(argv[1]);
+	vector<int> fileContent = rdFile(argv[2]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
 		return 1;
@@ -89,14 +89,14 @@ int main(int argc, char* argv[]) {
 		cout << CPUburst[i] << endl;
 	}
 
-	if (argv[2] == "FCFS") {  // First come, first serve
+	if (argv[3] == "FCFS") {  // First come, first serve
 		//FCFS(processes, CPUburst);
 		cout << "FCFS" << endl;
 	}
-	else if (argv[2] == "SRTF") {  // Shortest remaining task first - preemptive
+	else if (argv[3] == "SRTF") {  // Shortest remaining task first - preemptive
 		cout << "SRTF" << endl;
 	}
-	else if (argv[2] == "RR") {  // Round robin
+	else if (argv[3] == "RR") {  // Round robin
 		cout << "RR" << endl;
 	}
 	else {
