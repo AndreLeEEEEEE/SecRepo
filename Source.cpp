@@ -13,7 +13,6 @@ vector<int> rdFile(string fileName) {
 	ifstream theFile(fileName);
 	vector<int> contents;
 	string word;
-	//if (theFile.is_open()) {
 	while (theFile >> word) {  // While there's something to be read
 		stringstream scasti(word);
 		int temp;
@@ -22,7 +21,6 @@ vector<int> rdFile(string fileName) {
 		cout << word << endl;
 	}
 	theFile.close();
-	//}
 	return contents;
 }
 
