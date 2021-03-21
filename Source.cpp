@@ -13,15 +13,15 @@ vector<int> rdFile(string fileName) {
 	ifstream theFile(fileName);
 	vector<int> contents;
 	string word;
-	if (theFile.is_open()) {
-		while (theFile >> word) {  // While there's something to be read
-			stringstream scasti(word);
-			int temp;
-			scasti >> temp;
-			contents.push_back(temp);
-		}
-		theFile.close();
+	//if (theFile.is_open()) {
+	while (theFile >> word) {  // While there's something to be read
+		stringstream scasti(word);
+		int temp;
+		scasti >> temp;
+		contents.push_back(temp);
 	}
+	theFile.close();
+	//}
 	return contents;
 }
 
@@ -62,9 +62,6 @@ void FCFS(map<int, int> process, vector<int> burst) {
 }
 
 int main(int argc, char* argv[]) {
-	for (int i = 0; i < argc; ++i) {
-		cout << argv[i] << endl;
-	}
 	vector<int> fileContent = rdFile(argv[2]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
