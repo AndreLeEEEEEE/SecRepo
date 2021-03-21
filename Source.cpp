@@ -7,10 +7,10 @@
 #include <iomanip>
 #include <map>
 #include <numeric>
-#include <typeinfo>
 using namespace std;
 
 int strtoi(string str) {
+	// I have to make my own string to int function since 'stoi' doesn't work in a linux environment
 	stringstream scasti(str);
 	int temp;
 	scasti >> temp;
@@ -67,6 +67,7 @@ void FCFS(map<int, int> process, vector<int> burst) {
 
 int main(int argc, char* argv[]) {
 	vector<string> fileContent = rdFile(argv[2]);
+
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
 		return 1;
@@ -76,17 +77,23 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	vector<int> integerForm;
+	vector<int> intContent;
+	/* I have to convert fileContent from string to int in main because for some reason
+	* doing so in rdFile (either with function calls or raw statements) will yield a
+	* 'bad_alloc' error.*/
 	for (int i = 0; i < fileContent.size(); ++i) {
-		integerForm.push_back(strtoi(fileContent[i]));
+		intContent.push_back(strtoi(fileContent[i]));
 	}
+
 	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
-	/*for (int i = 0; i < fileContent.size(); i + 3) {
-		processes.insert(pair<int, int>(fileContent[i], fileContent[i + 1]));
-		CPUburst.push_back(fileContent[i+2]);
-	}*/
+	for (int i = 0; i < intContent.size(); i + 3) {
+		processes.insert(pair<int, int>(intContent[i], intContent[i + 1]));
+		CPUburst.push_back(intContent[i+2]);
+	}
 
+	// Due to being a command line variable, argv[3] is technically is string, but typeid says Pc
+	// To officially make it a string, I have to store it in string variable
 	string method = argv[3];
 	if (method == "FCFS") {  // First come, first serve
 		//FCFS(processes, CPUburst);
