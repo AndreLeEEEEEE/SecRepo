@@ -14,7 +14,7 @@ vector<int> rdFile(string fileName) {
 	vector<int> contents;
 	string word;
 	//if (theFile.is_open()) {
-	while (getline(theFile, word)) {  // While there's something to be read
+	while (theFile >> word) {  // While there's something to be read
 		stringstream scasti(word);
 		int temp;
 		scasti >> temp;
