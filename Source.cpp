@@ -75,14 +75,23 @@ int main(int argc, char* argv[]) {
 		CPUburst.push_back(fileContent[i+2]);
 	}
 
+	// Remove later
+	for (int i = 0; i < processes.size(); ++i) {
+		cout << processes[i + 1] << endl;
+	}
+	for (int i = 0; i < CPUburst.size(); ++i) {
+		cout << CPUburst[i] << endl;
+	}
+
 	if (argv[2] == "FCFS") {  // First come, first serve
-		FCFS(processes, CPUburst);
+		//FCFS(processes, CPUburst);
+		cout << "FCFS" << endl;
 	}
 	else if (argv[2] == "SRTF") {  // Shortest remaining task first - preemptive
-
+		cout << "SRTF" << endl;
 	}
 	else if (argv[2] == "RR") {  // Round robin
-
+		cout << "RR" << endl;
 	}
 	else {
 		printf("No CPU scheduling method selected\n");
