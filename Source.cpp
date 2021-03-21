@@ -19,7 +19,6 @@ vector<int> rdFile(string fileName) {
 			int temp;
 			scasti >> temp;
 			contents.push_back(temp);
-			cout << temp << endl;
 		}
 		theFile.close();
 	}
@@ -63,6 +62,9 @@ void FCFS(map<int, int> process, vector<int> burst) {
 }
 
 int main(int argc, char* argv[]) {
+	for (int i = 0; i < argc; ++i) {
+		cout << argv[i] << endl;
+	}
 	vector<int> fileContent = rdFile(argv[1]);
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
