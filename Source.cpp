@@ -81,6 +81,9 @@ int main(int argc, char* argv[]) {
 		printf("The input file is incomplete\n");
 		return 1;
 	}
+	for (int i = 0; i < fileContent.size(); ++i) {
+		cout << fileContent[i] << endl;
+	}
 	map<int, int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
 	/*for (int i = 0; i < fileContent.size(); i + 3) {
