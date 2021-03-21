@@ -83,6 +83,7 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < fileContent.size(); ++i) {
 		intContent.push_back(strtoi(fileContent[i]));
 	}
+	fileContent.clear();
 
 	vector<int> processes;  // Mapping for more organization, process is key, arrival time is value
 	vector<int> CPUburst;  // There were issues with stuffing a vector into a map, so the burst times are separated
