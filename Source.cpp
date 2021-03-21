@@ -1,13 +1,13 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <queue>
-#include <vector>
-#include <iomanip>
-#include <map>
-#include <numeric>
-using namespace std;
+#include <iostream>  // General printing library
+#include <fstream>  // Reading in files
+#include <sstream>  // Converting string to int
+#include <string>  // Use of strings
+#include <queue>  // Use of queues
+#include <vector>  // Use of vectors
+//#include <iomanip>  // 
+#include <map>  // Use of maps
+#include <numeric>  // Use of summation
+using namespace std;  // Eliminates need to type std
 
 int strtoi(string str) {
 	// I have to make my own string to int function since 'stoi' doesn't work in a linux environment
