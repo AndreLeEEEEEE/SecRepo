@@ -15,10 +15,10 @@ vector<int> rdFile(string fileName) {
 	string word;
 	//if (theFile.is_open()) {
 	while (theFile >> word) {  // While there's something to be read
-		/*stringstream scasti(word);
+		stringstream scasti(word);
 		int temp;
 		scasti >> temp;
-		contents.push_back(temp);*/
+		contents.push_back(temp);
 		cout << word << endl;
 	}
 	theFile.close();
