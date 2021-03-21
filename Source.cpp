@@ -11,17 +11,21 @@ using namespace std;
 
 vector<int> rdFile(string fileName) {
 	ifstream theFile(fileName);
-	vector<int> contents;
+	vector<string> fileContent;
+	vector<int> mat;
 	string word;
 	while (theFile >> word) {  // While there's something to be read
-		stringstream scasti(word);
-		int temp;
-		scasti >> temp;
-		contents.push_back(temp);
-		cout << word << endl;
+		fileContent.push_back(word);
 	}
 	theFile.close();
-	return contents;
+
+	for (int i = 0; i < fileContent.size(); ++i) {
+		stringstream scasti(fileContent[i]);
+		int temp;
+		scasti >> temp;
+		mat.push_back(temp);
+	}
+	return mat;
 }
 
 int turnAround(int finish, int arrival) {
