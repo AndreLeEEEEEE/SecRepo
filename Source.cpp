@@ -18,6 +18,7 @@ int strtoi(string str) {
 }
 
 vector<string> rdFile(string fileName) {
+	// Read in the file
 	ifstream theFile(fileName);
 	vector<string> contents;
 	string word;
@@ -30,12 +31,19 @@ vector<string> rdFile(string fileName) {
 }
 
 void printStar(int amount, bool gantt) {
+	// Print multiple stars for the title or the gantt chart
 	for (int s = 0; s < amount; ++s) {
 		printf("*");
 		if (gantt) {
 			printf(" ");
 		}
 	}
+}
+
+float averageVector(vector<int> vec) {
+	// Calculate the floating point sum of a vector
+	float f_sum = float(accumulate(vec.begin(), vec.end(), 0));
+	return f_sum / vec.size();
 }
 
 void Gantt(vector<int> a, vector<int> b, vector<int> f, vector<int> t, vector<int> c, string algo) {
@@ -73,17 +81,19 @@ void Gantt(vector<int> a, vector<int> b, vector<int> f, vector<int> t, vector<in
 	}
 	printf("\n");
 	// Additional stats
-	
-
+	printf("Average CPU burst time = %f ms\n", averageVector(b));
+	printf("Average waiting time = %f ms\n", averageVector(wait));
+	printf("Average turn around time = %f ms\n", averageVector(turn));
+	printf("Total No. of Context Switching Performed = %d\n", accumulate(c.begin(), c.end(), 0));
 }
 
 void FCFS(vector<int> process, vector<int> burst) {
 	queue<int> ready;
 	int CPU_sum = accumulate(burst.begin(), burst.end(), 0);  // Sum of all burst times
 	vector<int> finish(process.size(), 0);
-	vector<int> times;
-	vector<int> store_b = burst;
-	int CPU = 0;
+	vector<int> times;  // Keep track of when processes start
+	vector<int> store_b = burst;  // We need to keep a unmodified copy
+	int CPU = 0;  // Keep track of which process is at the front
 	int j = 0;  // j is the current ms
 	bool allDone = false;  // While loop condition
 
@@ -102,7 +112,7 @@ void FCFS(vector<int> process, vector<int> burst) {
 			times.push_back(0);
 		}
 		else if (burst[ready.front() - 1] > 0) {
-			// Denote when a new process starts
+			// Denote if new process starts
 			if (CPU != ready.front()) {
 				CPU = ready.front();
 				times.push_back(CPU);
@@ -114,9 +124,8 @@ void FCFS(vector<int> process, vector<int> burst) {
 			--burst[ready.front() - 1];
 			if (burst[ready.front() - 1] == 0) {
 				// If process is finished
-				finish[ready.front() - 1] = j + 1;
+				finish[ready.front() - 1] = j + 1;  // Store process' finish time
 				ready.pop();
-
 			}
 		}
 
@@ -125,14 +134,15 @@ void FCFS(vector<int> process, vector<int> burst) {
 		for (int k = 0; k < finish.size(); ++k) {
 			// Check if any process, arrived or not, hasn't finished
 			if (finish[k] == 0) {
+				// A single unfinished process means keep going
 				allDone = false;
 				break;
 			}
 		}
 	}
 
-	vector<int> context(finish.size(), 0);
-	Gantt(process, store_b, finish, times, context, "FCFS");
+	vector<int> context(finish.size(), 0);  // FSFC has no context switches
+	Gantt(process, store_b, finish, times, context, "FCFS");  // Print out in gantt chart form
 }
 
 int main() {
