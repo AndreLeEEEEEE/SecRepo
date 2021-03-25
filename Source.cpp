@@ -93,8 +93,7 @@ void FCFS(vector<int> process, vector<int> burst) {
 	vector<int> finish(process.size(), 0);
 	vector<int> times;  // Keep track of when processes start
 	vector<int> store_b = burst;  // We need to keep a unmodified copy
-	int CPU = 0;  // Keep track of which process is at the front
-	int j = 0;  // j is the current ms
+	int CPU = 0, j = 0;  // Keep track of which process is at the front; // j is the current ms
 	bool allDone = false;  // While loop condition
 
 	while (!allDone) {  // Go until all processes have finished
@@ -126,6 +125,73 @@ void FCFS(vector<int> process, vector<int> burst) {
 				// If process is finished
 				finish[ready.front() - 1] = j + 1;  // Store process' finish time
 				ready.pop();
+			}
+		}
+
+		++j;
+		allDone = true;
+		for (int k = 0; k < finish.size(); ++k) {
+			// Check if any process, arrived or not, hasn't finished
+			if (finish[k] == 0) {
+				// A single unfinished process means keep going
+				allDone = false;
+				break;
+			}
+		}
+	}
+
+	vector<int> context(finish.size(), 0);  // FSFC has no context switches
+	Gantt(process, store_b, finish, times, context, "FCFS");  // Print out in gantt chart form
+}
+
+void RR(vector<int> process, vector<int> burst, int quantum) {
+	queue<int> ready;
+	int CPU_sum = accumulate(burst.begin(), burst.end(), 0);  // Sum of all burst times
+	vector<int> finish(process.size(), 0);
+	vector<int> times;  // Keep track of when processes start
+	vector<int> store_b = burst;  // We need to keep a unmodified copy
+	vector<int> context(process.size(), 0);
+	int CPU = 0, j = 0, q = 0;  // Keep track of which process is at the front; // j is the current ms; // q is the building quantum time
+	bool allDone = false;  // While loop condition
+
+	while (!allDone) {  // Go until all processes have finished
+		// Check if any process arrives at this time and place at back of queue
+		for (int k = 0; k < process.size(); ++k) {
+			// Check arrival times
+			if (process[k] == j) {
+				// Push process onto queue if arrived
+				ready.push(k+1);
+				break;
+			}
+		}
+
+		if (ready.empty()) {  // If no process is in the ready queue, time marches
+			times.push_back(0);
+		}
+		else if (q < quantum) {
+			// Denote if new process starts
+			if (CPU != ready.front()) {
+				CPU = ready.front();
+				times.push_back(CPU);
+			}
+			else {
+				times.push_back(0);
+			}
+			// If current process still has burst left and/or quantum left
+			--burst[ready.front() - 1];
+			++q;
+			if (burst[ready.front() - 1] == 0) {
+				// If process is finished
+				finish[ready.front() - 1] = j + 1;  // Store process' finish time
+				ready.pop();
+				q = 0;
+			}
+			else if (q == quantum) {
+				++context[ready.front() - 1];
+				ready.push(ready.front());
+				ready.pop();
+				q = 0;
+				
 			}
 		}
 
