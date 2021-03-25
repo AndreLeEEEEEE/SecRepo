@@ -89,11 +89,11 @@ void Gantt(vector<int> a, vector<int> b, vector<int> f, vector<int> t, vector<in
 
 void FCFS(vector<int> process, vector<int> burst) {
 	queue<int> ready;
-	int CPU_sum = accumulate(burst.begin(), burst.end(), 0);  // Sum of all burst times
 	vector<int> finish(process.size(), 0);
 	vector<int> times;  // Keep track of when processes start
 	vector<int> store_b = burst;  // We need to keep a unmodified copy
-	int CPU = 0, j = 0;  // Keep track of which process is at the front; // j is the current ms
+	int CPU = 0;  // Keep track of which process is at the front
+	int j = 0;  // j is the current ms
 	bool allDone = false;  // While loop condition
 
 	while (!allDone) {  // Go until all processes have finished
@@ -103,7 +103,6 @@ void FCFS(vector<int> process, vector<int> burst) {
 			if (process[k] == j) {
 				// Push process onto queue if arrived
 				ready.push(k+1);
-				break;
 			}
 		}
 
@@ -146,7 +145,6 @@ void FCFS(vector<int> process, vector<int> burst) {
 
 void RR(vector<int> process, vector<int> burst, int quantum) {
 	queue<int> ready;
-	int CPU_sum = accumulate(burst.begin(), burst.end(), 0);  // Sum of all burst times
 	vector<int> finish(process.size(), 0);
 	vector<int> times;  // Keep track of when processes start
 	vector<int> store_b = burst;  // We need to keep a unmodified copy
@@ -160,15 +158,14 @@ void RR(vector<int> process, vector<int> burst, int quantum) {
 			// Check arrival times
 			if (process[k] == j) {
 				// Push process onto queue if arrived
-				ready.push(k+1);
-				break;
+				ready.push(k + 1);
 			}
 		}
 
 		if (ready.empty()) {  // If no process is in the ready queue, time marches
 			times.push_back(0);
 		}
-		else if (q < quantum) {
+		else {
 			// Denote if new process starts
 			if (CPU != ready.front()) {
 				CPU = ready.front();
@@ -187,11 +184,12 @@ void RR(vector<int> process, vector<int> burst, int quantum) {
 				q = 0;
 			}
 			else if (q == quantum) {
-				++context[ready.front() - 1];
-				ready.push(ready.front());
-				ready.pop();
+				// Process isn't done
+				++context[ready.front() - 1];  // Increment No. of contexts
+				ready.push(ready.front());  // Put process on back
+				ready.pop();  // Before removing from front
 				q = 0;
-				
+
 			}
 		}
 
@@ -207,8 +205,7 @@ void RR(vector<int> process, vector<int> burst, int quantum) {
 		}
 	}
 
-	vector<int> context(finish.size(), 0);  // FSFC has no context switches
-	Gantt(process, store_b, finish, times, context, "FCFS");  // Print out in gantt chart form
+	Gantt(process, store_b, finish, times, context, "RR");  // Print out in gantt chart form
 }
 
 int main() {
@@ -241,16 +238,15 @@ int main() {
 		CPUburst.push_back(intContent[i + 1]);
 	}
 
-	FCFS(processes, CPUburst);
 	// Due to being a command line variable, argv[3] is technically is string, but typeid says Pc
 	// To officially make it a string, I have to store it in string variable
 	//string method = argv[3];
 	//if (method == "FCFS") {  // First come, first serve
-	//	//FCFS(processes, CPUburst);
-	//	cout << "FCFS" << endl;
+	//	FCFS(processes, CPUburst);
 	//}
 	//else if (method == "SRTF") {  // Shortest remaining task first - preemptive
-	//	cout << "SRTF" << endl;
+	// 	string t_q = argv[4];
+	//	RR(processes, CPUburst, strtoi(t_q));
 	//}
 	//else if (method == "RR") {  // Round robin
 	//	cout << "RR" << endl;
