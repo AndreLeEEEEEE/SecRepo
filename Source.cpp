@@ -7,6 +7,7 @@
 #include <map>  // Use of maps
 #include <numeric>  // Use of summation
 #include <iomanip>  // Use of tables
+#include <limits>
 using namespace std;  // Eliminates need to type std
 
 int strtoi(string str) {
@@ -87,8 +88,86 @@ void Gantt(vector<int> a, vector<int> b, vector<int> f, vector<int> t, vector<in
 	printf("Total No. of Context Switching Performed = %d\n", accumulate(c.begin(), c.end(), 0));
 }
 
+void SRTF(vector<int> process, vector<int> burst) {
+	vector<int> f_queue;  // Holds process ids 
+	// A real queue doesn't quite work when I have to search through it to find the smallest burst
+	vector<int> finish(process.size(), 0);
+	vector<int> times;  // Keep track of when processes start
+	vector<int> store_b = burst;  // We need to keep a unmodified copy
+	vector<int> context(process.size(), 0);  // Keeps track of when process undergo a context switch
+	int CPU = 0;  // Keep track of which process is at the front
+	int j = 0;  // j is the current ms
+	bool allDone = false;  // While loop condition
+
+	while (!allDone) {  // Go until all processes have finished
+		// Check if any process arrives at this time and place at back of queue
+		for (int k = 0; k < process.size(); ++k) {
+			// Check arrival times
+			if (process[k] == j) {
+				// Push process onto queue if arrived
+				f_queue.push_back(k + 1);
+			}
+		}
+
+		// Find the process with the shortest time remaining
+		if (f_queue.empty()) {  // If no process is in the ready queue, time marches
+			times.push_back(0);
+		}
+		else {
+			int shortest = numeric_limits<int>::max();  // smallest burst
+			int displace = 0;  // Tells the program how many processes to move back
+			for (int i = 0; i < f_queue.size(); ++i) {
+				if (burst[f_queue[i] - 1] < shortest) {
+					shortest = burst[f_queue[i] - 1];  // Find shortest burst
+					displace = i;
+				}
+			}
+			// Move the process with the smallest burst to the front
+			for (int i = 0; i < displace; ++i) {
+				f_queue.push_back(f_queue.front());
+				f_queue.erase(f_queue.begin());
+			}
+			// Denote if new process starts
+			if (CPU != f_queue.front()) {
+				CPU = f_queue.front();
+				times.push_back(CPU);
+			}
+			else {
+				times.push_back(0);
+			}
+			// If current process still has burst left
+			--burst[f_queue.front() - 1];
+			if (burst[f_queue.front() - 1] == 0) {
+				// If process is finished
+				finish[f_queue.front() - 1] = j + 1;  // Store process' finish time
+				f_queue.erase(f_queue.begin());
+			}
+		}
+
+		++j;
+		allDone = true;
+		for (int k = 0; k < finish.size(); ++k) {
+			// Check if any process, arrived or not, hasn't finished
+			if (finish[k] == 0) {
+				// A single unfinished process means keep going
+				allDone = false;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < process.size(); ++i) {
+		// Update contexts based on appearances in times vector
+		if (count(times.begin(), times.end(), i + 1) > 1) {
+			context[i] = count(times.begin(), times.end(), i + 1) - 1;
+		}
+	}
+
+	Gantt(process, store_b, finish, times, context, "SRTF");  // Print out in gantt chart form
+}
+
 void FCFS(vector<int> process, vector<int> burst) {
-	queue<int> ready;
+	queue<int> ready;  // Holds process ids
 	vector<int> finish(process.size(), 0);
 	vector<int> times;  // Keep track of when processes start
 	vector<int> store_b = burst;  // We need to keep a unmodified copy
@@ -144,11 +223,11 @@ void FCFS(vector<int> process, vector<int> burst) {
 }
 
 void RR(vector<int> process, vector<int> burst, int quantum) {
-	queue<int> ready;
+	queue<int> ready;  // Holds process ids
 	vector<int> finish(process.size(), 0);
 	vector<int> times;  // Keep track of when processes start
 	vector<int> store_b = burst;  // We need to keep a unmodified copy
-	vector<int> context(process.size(), 0);
+	vector<int> context(process.size(), 0);  // Keeps track of when process undergo a context switch
 	int CPU = 0, j = 0, q = 0;  // Keep track of which process is at the front; // j is the current ms; // q is the building quantum time
 	bool allDone = false;  // While loop condition
 
@@ -189,7 +268,6 @@ void RR(vector<int> process, vector<int> burst, int quantum) {
 				ready.push(ready.front());  // Put process on back
 				ready.pop();  // Before removing from front
 				q = 0;
-
 			}
 		}
 
@@ -245,11 +323,11 @@ int main() {
 	//	FCFS(processes, CPUburst);
 	//}
 	//else if (method == "SRTF") {  // Shortest remaining task first - preemptive
-	// 	string t_q = argv[4];
-	//	RR(processes, CPUburst, strtoi(t_q));
+	//	SRTF(processes, CPUburst);
 	//}
 	//else if (method == "RR") {  // Round robin
-	//	cout << "RR" << endl;
+	//	string t_q = argv[4];
+	//	RR(processes, CPUburst, strtoi(t_q));
 	//}
 	//else {
 	//	printf("No CPU scheduling method selected\n");
