@@ -286,10 +286,8 @@ void RR(vector<int> process, vector<int> burst, int quantum) {
 	Gantt(process, store_b, finish, times, context, "RR");  // Print out in gantt chart form
 }
 
-int main() {
-	//int argc, char* argv[]
-	//vector<string> fileContent = rdFile(argv[2]);
-	vector<string> fileContent = rdFile("Input.txt");
+int main(int argc, char* argv[]) {
+	vector<string> fileContent = rdFile(argv[2]);
 
 	if (fileContent.empty() == true) {  // Check if there's anything in the file
 		printf("The input file is either empty or cannot be opened\n");
