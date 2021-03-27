@@ -8,6 +8,7 @@
 #include <numeric>  // Use of summation
 #include <iomanip>  // Use of tables
 #include <limits>  // Use of integer infinity
+#include <algorithm>  // Use of count function in a unix environment
 using namespace std;  // Eliminates need to type std
 
 int strtoi(string str) {
