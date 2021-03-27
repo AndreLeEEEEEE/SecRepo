@@ -318,20 +318,20 @@ int main() {
 
 	// Due to being a command line variable, argv[3] is technically is string, but typeid says Pc
 	// To officially make it a string, I have to store it in string variable
-	//string method = argv[3];
-	//if (method == "FCFS") {  // First come, first serve
-	//	FCFS(processes, CPUburst);
-	//}
-	//else if (method == "SRTF") {  // Shortest remaining task first - preemptive
-	//	SRTF(processes, CPUburst);
-	//}
-	//else if (method == "RR") {  // Round robin
-	//	string t_q = argv[4];
-	//	RR(processes, CPUburst, strtoi(t_q));
-	//}
-	//else {
-	//	printf("No CPU scheduling method selected\n");
-	//	return 1;
-	//}
+	string method = argv[3];
+	if (method == "FCFS") {  // First come, first serve
+		FCFS(processes, CPUburst);
+	}
+	else if (method == "SRTF") {  // Shortest remaining task first - preemptive
+		SRTF(processes, CPUburst);
+	}
+	else if (method == "RR") {  // Round robin
+		string t_q = argv[4];
+		RR(processes, CPUburst, strtoi(t_q));
+	}
+	else {
+		printf("No CPU scheduling method selected\n");
+		return 1;
+	}
 	return 0;
 }
